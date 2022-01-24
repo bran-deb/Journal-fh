@@ -15,3 +15,45 @@
     padding: 20px;
     width: 250px;
 }
+
+.auth__title {
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.auth__input {
+    color: var(--dark-grey);
+    border: 0px;
+    border-bottom: 1px solid var(--light-grey);
+    font-size: 16px;
+    margin-bottom: 10px;
+    height: 20px;
+    width: 100%;
+
+    transition: border-bottom .3s ease;
+}
+
+.auth__input:focus {
+    border-bottom: 1px solid var(--primary);
+    outline: none;
+}
+
+.auth__social-networcks {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.auth__alert-error {
+    background-color: red;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 5px;
+}
