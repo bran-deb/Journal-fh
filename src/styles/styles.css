@@ -2,3 +2,5 @@
 @import './base/settings.css';
 /* components */
 @import './components/auth.css';
+@import './components/buttons.css';
+@import './components/links.css'
