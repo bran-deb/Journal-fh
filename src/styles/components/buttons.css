@@ -5,10 +5,16 @@
     cursor: pointer;
     font-size: 12px;
     padding: 7px 10px 7px 10px;
+
+    transition: color .3s ease;
 }
 
 .btn:focus {
     outline: none;
+}
+
+.btn:hover {
+    color: rgb(180, 180, 180);
 }
 
 .btn-primary {
