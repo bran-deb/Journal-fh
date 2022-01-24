@@ -3,4 +3,5 @@
 /* components */
 @import './components/auth.css';
 @import './components/buttons.css';
-@import './components/links.css'
+@import './components/links.css';
+@import './components/journal.css';
