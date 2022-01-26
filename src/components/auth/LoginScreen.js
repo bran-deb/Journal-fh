@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm'
-import { login } from '../../actions/auth'
+import { login, startLoginEmailPassword } from '../../actions/auth'
 
 export const LoginScreen = () => {
     //puede mandar dispatch desde cualquier directorio
@@ -18,7 +18,10 @@ export const LoginScreen = () => {
     //se manda al login los datos (uid,displayname)
     const handleLogin = (e) => {
         e.preventDefault()
-        dispatch(login(12345, 'Hernando'))
+        //dispatch a la tarea async
+        dispatch(startLoginEmailPassword(email, password))
+        //dispatch de la tarea sync
+        // dispatch(login(12345, 'Hernando'))
     }
 
     return (
