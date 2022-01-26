@@ -1,3 +1,5 @@
+import { getAuth, signInWithPopup } from 'firebase/auth';
+import { googleAuthProvider } from '../firebase/firebase-config';
 import { types } from '../types/types'
 
 //accion asincrona
@@ -9,6 +11,19 @@ export const startLoginEmailPassword = (email, password) => {
         }, 3500);
     }
 }
+
+export const startGoogleLogin = () => {
+    return (dispatch) => {
+        const auth = getAuth()
+        signInWithPopup(auth, googleAuthProvider)
+            //destructuring {user} = usercredential
+            .then(({ user }) => {
+                const { uid, displayName } = user
+                dispatch(login(uid, displayName))
+            })
+    }
+}
+
 //accion sincrona
 export const login = (uid, displayName) => ({
     type: types.login,
