@@ -3,12 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeError, setError } from '../../actions/ui';
 
 export const RegisterScreen = () => {
 
     const dispatch = useDispatch();
+    //extraemos solo el mensaje de error del estado actual del arror
+    const { msgError } = useSelector(state => state.ui);
 
     const [formValues, handleInputChange] = useForm({
         name: 'hernando',
@@ -48,9 +50,12 @@ export const RegisterScreen = () => {
         <>
             <h3 className='auth__title'>Register</h3>
             <form onSubmit={handleRegister}>
-                <div className='auth__alert-error'>
-                    Hola mundo
-                </div>
+                {
+                    msgError &&
+                    <div className='auth__alert-error'>
+                        {msgError}
+                    </div>
+                }
                 <input
                     autoComplete='none'
                     type='text'
