@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm'
-import { login } from '../../actions/auth'
+import { startGoogleLogin, startLoginEmailPassword } from '../../actions/auth'
 
 export const LoginScreen = () => {
     //puede mandar dispatch desde cualquier directorio
@@ -18,7 +18,15 @@ export const LoginScreen = () => {
     //se manda al login los datos (uid,displayname)
     const handleLogin = (e) => {
         e.preventDefault()
-        dispatch(login(12345, 'Hernando'))
+        //dispatch a la tarea async
+        dispatch(startLoginEmailPassword(email, password))
+        //dispatch de la tarea sync
+        // dispatch(login(12345, 'Hernando'))
+    }
+
+    const handleGoogleLogin = () => {
+        //auth with googleLogin
+        dispatch(startGoogleLogin())
     }
 
     return (
@@ -53,7 +61,10 @@ export const LoginScreen = () => {
 
                 <div className='auth__social-networcks'>
                     <p>Login with social networks</p>
-                    <div className="google-btn">
+                    <div
+                        className="google-btn"
+                        onClick={handleGoogleLogin}
+                    >
                         <div className="google-icon-wrapper">
                             <img className="google-icon"
                                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
