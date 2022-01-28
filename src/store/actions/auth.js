@@ -1,16 +1,8 @@
-import { createUserWithEmailAndPassword, getAuth, signInWithPopup, updateProfile } from 'firebase/auth';
-import { googleAuthProvider } from '../firebase/firebase-config';
-import { types } from '../types/types'
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
+import { googleAuthProvider } from '../../firebase/firebase-config';
+import { types } from '../../types/types'
 
-//accion asincrona
-//esta accion dispara otra accion cuando resuelve la tarea asincrona
-export const startLoginEmailPassword = (email, password) => {
-    return (dispatch) => {
-        setTimeout(() => {
-            dispatch(login(123, 'Pedro'))
-        }, 3500);
-    }
-}
+
 
 //accion async
 export const startRegisterWithEmailPasswordName = (email, password, name) => {
@@ -24,6 +16,26 @@ export const startRegisterWithEmailPasswordName = (email, password, name) => {
             })
             .catch(e => {
                 console.log(e);
+            })
+    }
+}
+
+//accion no necesariamente asincrona
+//esta accion dispara otra accion cuando resuelve la tarea asincrona
+export const startLoginEmailPassword = (email, password) => {
+    return (dispatch) => {
+        const auth = getAuth()
+        console.log(auth, email, password);
+        signInWithEmailAndPassword(auth, email, password)
+            .then((usercredential) => {
+                console.log(usercredential);
+                // const { uid, displayName } = user
+                // dispatch(login(uid, displayName))
+            })
+            .catch(e => {
+                console.log(e);
+                console.log(e.code)
+                console.log(e.message)
             })
     }
 }
