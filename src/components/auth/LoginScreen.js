@@ -1,17 +1,20 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm'
-import { startGoogleLogin, startLoginEmailPassword } from '../../actions/auth'
+import { startGoogleLogin, startLoginEmailPassword } from '../../store/actions/auth'
+import validator from 'validator';
+import { removeError, setError } from '../../store/actions/ui';
 
 export const LoginScreen = () => {
     //puede mandar dispatch desde cualquier directorio
     const dispatch = useDispatch();
-
+    //get data from ui state
+    const { msgError } = useSelector(state => state.ui);
     const [formValues, handleInputChange] = useForm({
-        email: 'email@gmail.com',
-        password: 123456
+        email: 'email@mail.com',
+        password: '123456'
     })
     const { email, password } = formValues
 
@@ -19,9 +22,26 @@ export const LoginScreen = () => {
     const handleLogin = (e) => {
         e.preventDefault()
         //dispatch a la tarea async
-        dispatch(startLoginEmailPassword(email, password))
-        //dispatch de la tarea sync
-        // dispatch(login(12345, 'Hernando'))
+        if (isFormValid()) {
+            dispatch(startLoginEmailPassword(email, password))
+        }
+    }
+
+    const isFormValid = () => {
+        if (email.trim().length === 0) {
+            dispatch(setError('email is required'))
+            return false
+        }
+        if (!validator.isEmail(email)) {
+            dispatch(setError('email is not valid'))
+            return false
+        }
+        if (password.trim().length === 0) {
+            dispatch(setError('password is required'))
+            return false
+        }
+        dispatch(removeError())
+        return true
     }
 
     const handleGoogleLogin = () => {
@@ -33,6 +53,10 @@ export const LoginScreen = () => {
         <>
             <h3 className='auth__title'>Login</h3>
             <form onSubmit={handleLogin}>
+                {
+                    msgError &&
+                    <div className='auth__alert-error'>{msgError}</div>
+                }
                 <input
                     autoComplete='true'
                     type='text'
