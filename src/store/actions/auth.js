@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
 import { googleAuthProvider } from '../../firebase/firebase-config';
 import { types } from '../../types/types'
+import { finishLoading, startLoading } from './ui';
 
 
 
@@ -24,13 +25,15 @@ export const startRegisterWithEmailPasswordName = (email, password, name) => {
 //esta accion dispara otra accion cuando resuelve la tarea asincrona
 export const startLoginEmailPassword = (email, password) => {
     return (dispatch) => {
+        dispatch(startLoading())
         const auth = getAuth()
         console.log(auth, email, password);
         signInWithEmailAndPassword(auth, email, password)
-            .then((usercredential) => {
-                console.log(usercredential);
-                // const { uid, displayName } = user
-                // dispatch(login(uid, displayName))
+            .then(({ user }) => {
+                console.log(user);
+                const { uid, displayName } = user
+                dispatch(login(uid, displayName))
+                dispatch(finishLoading())
             })
             .catch(e => {
                 console.log(e);
@@ -54,7 +57,7 @@ export const startGoogleLogin = () => {
 
 //accion sincrona
 export const login = (uid, displayName) => ({
-    type: types.login,
+    type: types.LOGIN,
     payload: {
         uid,
         displayName

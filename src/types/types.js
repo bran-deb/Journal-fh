@@ -2,9 +2,12 @@
 
 
 export const types = {
-    login: '[Auth] Login',
-    logout: '[Auth] Logout',
+    LOGIN: '[Auth] Login',
+    LOGOUT: '[Auth] Logout',
     //[nombre del reducer]
-    uiSetError: '[UI] Set Error',
-    uiRemoveError: '[UI] Remove Error'
+    UISETERROR: '[UI] Set Error',
+    UIREMOVEERROR: '[UI] Remove Error',
+    // isLoading
+    UISTARTLOADING: '[UI] Start loading',
+    UIFINISHLOADING: '[UI] Finish loading'
 }

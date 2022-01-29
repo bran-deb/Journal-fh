@@ -11,7 +11,7 @@ export const LoginScreen = () => {
     //puede mandar dispatch desde cualquier directorio
     const dispatch = useDispatch();
     //get data from ui state
-    const { msgError } = useSelector(state => state.ui);
+    const { msgError, loading } = useSelector(state => state.ui);
     const [formValues, handleInputChange] = useForm({
         email: 'email@mail.com',
         password: '123456'
@@ -78,6 +78,7 @@ export const LoginScreen = () => {
                 <button
                     type='submit'
                     className='btn btn-primary btn-block'
+                    disabled={loading}
                 >
                     login
                 </button>
