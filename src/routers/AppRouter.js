@@ -8,6 +8,8 @@ import { LoginScreen } from '../components/auth/LoginScreen';
 import { JournalScreen } from '../components/journal/JournalScreen';
 import { login } from '../store/actions/auth';
 import { AuthRouter } from './AuthRouter';
+import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
 
 export const AppRouter = () => {
 
@@ -47,8 +49,23 @@ export const AppRouter = () => {
         <div>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/auth/*' element={<AuthRouter />} />
-                    <Route path='/' element={<JournalScreen />} />
+                    <Route
+                        path='/auth/*'
+                        element={
+                            <PublicRoute isAuthenticated={isLoggedIn}>
+                                <AuthRouter />
+                            </PublicRoute>
+                        }
+                    />
+
+                    <Route
+                        path='/'
+                        element={
+                            <PrivateRoute isAuthenticated={isLoggedIn}>
+                                <JournalScreen />
+                            </PrivateRoute>
+                        } />
+
                     <Route path='*' element={<LoginScreen />} />
                 </Routes>
             </BrowserRouter>
