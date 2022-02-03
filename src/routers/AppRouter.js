@@ -6,7 +6,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { LoginScreen } from '../components/auth/LoginScreen';
 import { JournalScreen } from '../components/journal/JournalScreen';
+import { loadNotes } from '../helpers/loadNotes';
 import { login } from '../store/actions/auth';
+import { setNotes } from '../store/actions/notes';
 import { AuthRouter } from './AuthRouter';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
@@ -22,12 +24,17 @@ export const AppRouter = () => {
     //se utiliza para mantener el estado de la autenticacion
     useEffect(() => {
         const auth = getAuth()
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             //si user contiene algo pregunta si existe el uid
             if (user?.uid) {
                 const { uid, displayName } = user
+
                 dispatch(login(uid, displayName))
                 setIsLoggedIn(true)
+                // trae los datos de firestore
+                const notes = await loadNotes(uid)
+                // guarda los notes en el storage
+                dispatch(setNotes(notes))
             } else {
                 setIsLoggedIn(false)
             }
