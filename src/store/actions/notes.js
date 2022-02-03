@@ -25,11 +25,16 @@ export const startNewNote = () => {
         dispatch(activeNote(id, newNote))
     }
 };
-
+//activa modo edicion
 export const activeNote = (id, note) => ({
     type: types.NOTES_ACTIVE,
     payload: {
         id,
         ...note
     }
+})
+//almacena las notas en el store
+export const setNotes = (notes) => ({
+    type: types.NOTES_LOAD,
+    payload: notes,
 })
