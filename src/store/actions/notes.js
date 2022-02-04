@@ -4,6 +4,7 @@ import {
     setDoc,
     collection,
 } from "../../firebase/firebase-config";
+import { loadNotes } from "../../helpers/loadNotes";
 import { types } from "../../types/types";
 
 //inicia una nueva nota
@@ -33,6 +34,17 @@ export const activeNote = (id, note) => ({
         ...note
     }
 })
+//carga los notes
+export const startLoadingNotes = (uid) => {
+    return async (dispatch) => {
+        // trae los datos de firestore
+        const notes = await loadNotes(uid)
+        // guarda los notes en el storage
+        dispatch(setNotes(notes))
+    }
+};
+
+
 //almacena las notas en el store
 export const setNotes = (notes) => ({
     type: types.NOTES_LOAD,
