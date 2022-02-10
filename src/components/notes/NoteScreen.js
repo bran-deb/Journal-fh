@@ -56,7 +56,7 @@ export const NoteScreen = () => {
                     (note.url) &&
                     <div className='notes__images'>
                         <img
-                            src='https://th.bing.com/th/id/R.2c921f8b766300d27290c36d01cbcbfd?rik=FKCY5q%2f327y0UA&pid=ImgRaw&r=0'
+                            src={note.url}
                             alt='imagen'
                         />
                     </div>

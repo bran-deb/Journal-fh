@@ -6,6 +6,7 @@ import {
     updateDoc,
     collection,
 } from "../../firebase/firebase-config";
+import { fileUpload } from '../../helpers/fileUpload';
 import { loadNotes } from "../../helpers/loadNotes";
 import { types } from "../../types/types";
 
@@ -85,3 +86,27 @@ export const refresNote = (id, note) => ({
         }
     }
 })
+
+// action async subida de img
+export const startUploading = (file) => {
+    return async (dispatch, getState) => {
+        const { active: activeNote } = getState().notes
+        //mostrar un loading
+        Swal.fire({
+            title: 'Uploading...',
+            text: 'Please wait...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading()
+            }
+        })
+        //postea file y reorna el url
+        const fileURL = await fileUpload(file)
+        // añade la url a nota activa
+        activeNote.url = fileURL
+        dispatch(startSaveNote(activeNote))
+        //se cierra el loading
+        Swal.close()
+    }
+}
