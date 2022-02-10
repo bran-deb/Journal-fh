@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2'
 import {
     db,
     doc,
@@ -68,5 +69,19 @@ export const startSaveNote = (note) => {
         const noteRef = doc(db, `${uid}/journal/notes/${note.id}`)
         //actualiza en la referencia(noteref) con noteToFirestore(sin id)
         await updateDoc(noteRef, noteToFirestore)
+        dispatch(refresNote(note.id, noteToFirestore))
+        //mesaje sweetalert2
+        Swal.fire('Saved', note.title, 'success')
     }
 }
+//actualiza la vista de la nota
+export const refresNote = (id, note) => ({
+    type: types.NOTES_UPDATED,
+    payload: {
+        id,
+        note: {  //le ponemos a la nota un id
+            id,
+            ...note
+        }
+    }
+})
