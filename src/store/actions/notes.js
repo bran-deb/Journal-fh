@@ -1,7 +1,9 @@
+import Swal from 'sweetalert2'
 import {
     db,
     doc,
     setDoc,
+    updateDoc,
     collection,
 } from "../../firebase/firebase-config";
 import { loadNotes } from "../../helpers/loadNotes";
@@ -49,4 +51,37 @@ export const startLoadingNotes = (uid) => {
 export const setNotes = (notes) => ({
     type: types.NOTES_LOAD,
     payload: notes,
+})
+
+
+//async action actualiza los datos a firestore
+export const startSaveNote = (note) => {
+    return async (dispatch, getState) => {
+        // const uid  = getState().auth.uid
+        const { uid } = getState().auth
+        //si note es undefined no se puede borrar el id por lo que verifica si existe
+        if (!note.url) {
+            delete note.url
+        }
+        //elimina el id por que no lo quiero guardar en la db
+        const noteToFirestore = { ...note }
+        delete (noteToFirestore.id)
+        const noteRef = doc(db, `${uid}/journal/notes/${note.id}`)
+        //actualiza en la referencia(noteref) con noteToFirestore(sin id)
+        await updateDoc(noteRef, noteToFirestore)
+        dispatch(refresNote(note.id, noteToFirestore))
+        //mesaje sweetalert2
+        Swal.fire('Saved', note.title, 'success')
+    }
+}
+//actualiza la vista de la nota
+export const refresNote = (id, note) => ({
+    type: types.NOTES_UPDATED,
+    payload: {
+        id,
+        note: {  //le ponemos a la nota un id
+            id,
+            ...note
+        }
+    }
 })
