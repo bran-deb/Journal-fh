@@ -30,6 +30,15 @@
     background-color: #3b409b;
 }
 
+.btn-danger {
+    background-color: red;
+    transition: background-color .3s ease;
+}
+
+.btn-danger:hover {
+    background-color: rgb(112, 0, 0);
+}
+
 .btn-block {
     width: 100%;
 }

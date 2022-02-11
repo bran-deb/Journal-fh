@@ -4,8 +4,10 @@ import {
     doc,
     setDoc,
     updateDoc,
+    deleteDoc,
     collection,
 } from "../../firebase/firebase-config";
+import { fileUpload } from '../../helpers/fileUpload';
 import { loadNotes } from "../../helpers/loadNotes";
 import { types } from "../../types/types";
 
@@ -85,3 +87,42 @@ export const refresNote = (id, note) => ({
         }
     }
 })
+
+// action async subida de img
+export const startUploading = (file) => {
+    return async (dispatch, getState) => {
+        const { active: activeNote } = getState().notes
+        //mostrar un loading
+        Swal.fire({
+            title: 'Uploading...',
+            text: 'Please wait...',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading()
+            }
+        })
+        //postea file y reorna el url
+        const fileURL = await fileUpload(file)
+        // añade la url a nota activa
+        activeNote.url = fileURL
+        dispatch(startSaveNote(activeNote))
+        //se cierra el loading
+        Swal.close()
+    }
+}
+//elimina los notes de firestore
+export const startDeleting = (id) => {
+    return async (dispatch, getState) => {
+        const { uid } = getState(getState).auth
+        const noteRef = doc(db, `${uid}/journal/notes/${id}`)
+        await deleteDoc(noteRef)
+        dispatch(deleteNote(id))
+    }
+}
+//actualiza datos del state
+export const deleteNote = (id) => ({
+    type: types.NOTES_DELETE,
+    payload: id
+})
+
