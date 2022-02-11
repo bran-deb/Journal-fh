@@ -28,6 +28,7 @@ export const startNewNote = () => {
         await setDoc(ref, newNote)
         const { id } = ref
         dispatch(activeNote(id, newNote))
+        dispatch(addNewNote(id, newNote))
     }
 };
 //activa modo edicion
@@ -38,6 +39,16 @@ export const activeNote = (id, note) => ({
         ...note
     }
 })
+
+export const addNewNote = (id, note) => ({
+    type: types.NOTES_ADD_NEW,
+    payload: {
+        id,
+        ...note
+    }
+})
+
+
 //carga los notes
 export const startLoadingNotes = (uid) => {
     return async (dispatch) => {
@@ -125,4 +136,7 @@ export const deleteNote = (id) => ({
     type: types.NOTES_DELETE,
     payload: id
 })
-
+//limpia notas cuando se desconecta
+export const noteLogout = () => ({
+    type: types.NOTES_LOGOUT_CLEANING
+})

@@ -6,7 +6,7 @@ export const NothingSelected = () => {
             <p>
                 Select something
                 <br />
-                pr create entry
+                create entry
             </p>
             <i className='far fa-star fa-4x mt-5' />
         </div>
