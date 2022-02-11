@@ -125,4 +125,7 @@ export const deleteNote = (id) => ({
     type: types.NOTES_DELETE,
     payload: id
 })
-
+//limpia notas cuando se desconecta
+export const noteLogout = () => ({
+    type: types.NOTES_LOGOUT_CLEANING
+})
