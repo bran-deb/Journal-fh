@@ -4,6 +4,7 @@ import {
     doc,
     setDoc,
     updateDoc,
+    deleteDoc,
     collection,
 } from "../../firebase/firebase-config";
 import { fileUpload } from '../../helpers/fileUpload';
@@ -110,3 +111,18 @@ export const startUploading = (file) => {
         Swal.close()
     }
 }
+//elimina los notes de firestore
+export const startDeleting = (id) => {
+    return async (dispatch, getState) => {
+        const { uid } = getState(getState).auth
+        const noteRef = doc(db, `${uid}/journal/notes/${id}`)
+        await deleteDoc(noteRef)
+        dispatch(deleteNote(id))
+    }
+}
+//actualiza datos del state
+export const deleteNote = (id) => ({
+    type: types.NOTES_DELETE,
+    payload: id
+})
+

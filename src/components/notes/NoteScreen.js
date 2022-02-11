@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
-import { activeNote } from '../../store/actions/notes';
+import { activeNote, startDeleting } from '../../store/actions/notes';
 import { NotesAppbar } from './NotesAppbar';
 
 export const NoteScreen = () => {
@@ -11,7 +11,7 @@ export const NoteScreen = () => {
     const { active: note } = useSelector(state => state.notes)
 
     const [formValues, handleInputChange, reset] = useForm(note)
-    const { body, title } = formValues
+    const { body, title, id } = formValues
     //guardamos en (activeId) la nota actual seleccionada
     //variable mutable que no renderiza el componente si cambia
     const activeId = useRef(note.id)//note.id es el state.active.id
@@ -29,6 +29,11 @@ export const NoteScreen = () => {
         // activeNote(id,note)se manda con spread para que lo vea como object
         dispatch(activeNote(formValues.id, { ...formValues }))
     }, [formValues, dispatch])
+
+    const handleDelete = () => {
+        dispatch(startDeleting(id))
+    }
+
 
     return (
         <div className='notes__main-content'>
@@ -63,6 +68,12 @@ export const NoteScreen = () => {
                 }
 
             </div>
+            <button
+                className='btn btn-danger'
+                onClick={handleDelete}
+            >
+                Delete
+            </button>
         </div>
     )
 };
