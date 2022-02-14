@@ -64,6 +64,9 @@
 
 .journal__entry-body {
     padding: 10px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
 }
 
 .journal__entry-title {
@@ -77,6 +80,7 @@
 
 
 .journal__entry-date-box {
+    margin-right: 5px;
     align-items: center;
     display: flex;
     flex-flow: column;
